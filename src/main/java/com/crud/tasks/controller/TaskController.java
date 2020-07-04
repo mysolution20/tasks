@@ -11,31 +11,28 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/task")
 public class TaskController {
-    /**
-     * URL do pobrania zadań to: http://localhost:8080/v1/task/getTasks
-     */
 
-    @RequestMapping(method = RequestMethod.GET, value = "getTasks")
+    @RequestMapping(method = RequestMethod.GET, value = "getTasks")   //http://localhost:8080/v1/task/getTasks
     public List<TaskDto> getTasks() {
         return new ArrayList<>();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getTask")
+    @RequestMapping(method = RequestMethod.GET, value = "getTask")   // http://localhost:8080/v1/task/getTask
     public TaskDto getTask(Long taskId) {
         return new TaskDto(1L, "test title", "test_content");
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask") // http://localhost:8080/v1/task/deleteTask
     public void deleteTask(Long taskId) {
 
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "updateTask")
+    @RequestMapping(method = RequestMethod.PUT, value = "updateTask")  // http://localhost:8080/v1/task/updateTask
     public TaskDto updateTask(TaskDto taskDto) {
         return new TaskDto(1L, "Edit test title", "Test content");
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTask")
+    @RequestMapping(method = RequestMethod.POST, value = "createTask") // http://localhost:8080/v1/task/createTask
     public void createTask(TaskDto taskDto) {
 
     }
