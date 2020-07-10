@@ -22,12 +22,8 @@ public class TaskController {
     public List<TaskDto> getTasks() {
 
 /*      TaskDto taskDto1 = new TaskDto(1L, "Title No.1", "test_content No.1");
-        TaskDto taskDto2 = new TaskDto(2L, "Title No.2", "test_content No.2");
-        TaskDto taskDto3 = new TaskDto(3L, "Title No.3", "test_content No.3");
         List<TaskDto> listTaskToDo = new ArrayList<>();
         listTaskToDo.add(taskDto1);
-        listTaskToDo.add(taskDto2);
-        listTaskToDo.add(taskDto3);
         return new ArrayList<>(listTaskToDo);*/
 
         return taskMapper.mapToTaskDtoList(service.getAllTasks());
@@ -35,7 +31,8 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")   // http://localhost:8080/v1/task/getTask
     public TaskDto getTask(Long taskId) {
-        return new TaskDto(1L, "test title", "test_content");
+        //  return new TaskDto(1L, "test title", "test_content");
+        return taskMapper.mapToTaskDto(service.getTaskById(taskId));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask") // http://localhost:8080/v1/task/deleteTask
