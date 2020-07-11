@@ -32,7 +32,7 @@ public class TaskController {
     @RequestMapping(method = RequestMethod.GET, value = "getTask")   // http://localhost:8080/v1/task/getTask
     public TaskDto getTask(Long taskId) {
         //  return new TaskDto(1L, "test title", "test_content");
-        return taskMapper.mapToTaskDto(service.getTaskById(taskId));
+        return taskMapper.mapToTaskDto(service.getByTask(taskId));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask") // http://localhost:8080/v1/task/deleteTask
