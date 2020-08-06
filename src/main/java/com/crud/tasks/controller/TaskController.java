@@ -1,5 +1,6 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/v1/task")
 public class TaskController {
@@ -29,6 +31,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTasks")
     public List<TaskDto> getTasks() {
+
         return taskMapper.mapToTaskDtoList(service.getAllTasks());
     }
 
@@ -55,7 +58,7 @@ public class TaskController {
 
     /**
      * 19.3  Zadanie: usuwanie zadania
-     *
+     * <p>
      * http://localhost:8080/v1/task/deleteTask?taskId=1
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
@@ -69,7 +72,9 @@ public class TaskController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "updateTask")
     public TaskDto updateTask(@RequestBody TaskDto taskDto) {
-        return taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(taskDto)));
+        final Task task = taskMapper.mapToTask(taskDto);// map DTO /data transfer object/ do encji dla zmian w DB
+        final Task saveTask = service.saveTask(task);   // po zmanie ma encje aby zapisać do BD gdzie uzupełnia id
+        return taskMapper.mapToTaskDto(saveTask);       // po zmianie id mapóje ponownie na/DTO/ aby nie zwracać encji
     }
 
     /**

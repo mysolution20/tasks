@@ -12,6 +12,9 @@ import java.util.Optional;
 public class DbService {
     @Autowired
     private TaskRepository repository;
+    /**
+     * Wstrzykiwanie zależności przez pole klasy tj. do właściwości klasy i adnotacja @Autowired
+     */
 
     public List<Task> getAllTasks() {
         return repository.findAll();
