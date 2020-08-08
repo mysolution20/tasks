@@ -6,8 +6,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class CoreConfiguration {
-    @Bean
-    pubic RestTemplate restTemplate() {
-        return new RestTemplate();
+    @Bean                              /**  <-- czy to fabryka bean'ów? Do zapytania na spotkaniu */
+    public RestTemplate restTemplate() {
+      return  new RestTemplate();
     }
 }

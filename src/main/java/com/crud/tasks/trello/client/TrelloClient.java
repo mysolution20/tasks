@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TrelloClient {
@@ -26,16 +27,31 @@ public class TrelloClient {
     @Value("${trello.app.token}")
     private String trelloToken;
 
+    @Value("${trello.app.username}")
+    private String username;
+
     public List<TrelloBoardDto> getTrelloBoards() {
-        URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/kodillauser/boards")
-                .queryParam("key", trelloAppKey)
-                .queryParam("token", trelloToken).build().encode().toUri();
 
-        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
+        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUri(), TrelloBoardDto[].class);
 
-        if (boardsResponse != null) {
+/**   'Original Kodilla has kept for educational purposes'
+    if (boardsResponse != null) {
             return Arrays.asList(boardsResponse);
         }
         return new ArrayList<>();
+ */
+
+        TrelloBoardDto trelloBoardDto = new TrelloBoardDto();
+        Optional<TrelloBoardDto> optionalTrelloBoardDto = Optional.of(trelloBoardDto);
+
+        return  (optionalTrelloBoardDto.isPresent())?Arrays.asList(boardsResponse):new ArrayList<>();
+
+    }
+
+    private URI getUri() {
+        final URI uri = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + username)
+                .queryParam("key", trelloAppKey)
+                .queryParam("token", trelloToken).build().encode().toUri();
+        return uri;
     }
 }
