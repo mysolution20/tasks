@@ -21,6 +21,7 @@ public class TrelloController {
 
         List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
 
+        /** 22.2 Zadanie: Ułożenie kodu - to review */
         Objects.requireNonNull(trelloBoards).stream()
                 .filter(e -> e.getName().contains("Kodilla"))
                 .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));

@@ -8,10 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class TrelloClient {
@@ -34,14 +31,26 @@ public class TrelloClient {
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUri(), TrelloBoardDto[].class);
 
-////   'Original Kodilla has kept for educational purposes'
-//    if (boardsResponse != null) {
-//            return Arrays.asList(boardsResponse);
-//        }
-//        return new ArrayList<>();
+/**  'Original Kodilla has kept for educational purposes'
+
+    if (boardsResponse != null) {
+            return Arrays.asList(boardsResponse);
+        }
+        return new ArrayList<>();
+ */
+
+
+/**   'Version with isPresent() method that need avoid as possible, kept for educational purposes'
 
         final boolean present = Optional.ofNullable(boardsResponse).isPresent();
         return  (present)?Arrays.asList(boardsResponse):new ArrayList<>();
+ */
+
+
+        return Optional.ofNullable(boardsResponse)
+                .map(Arrays::asList)        // --> .map(a -> Arrays.asList(a))  :lambda is much readable
+                .orElse(Collections.emptyList());
+
     }
 
     private URI getUri() {
@@ -49,7 +58,7 @@ public class TrelloClient {
                 .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
                 .queryParam("fields", "name,id")
-//                .queryParam("lists", "all")
+                .queryParam("lists", "all")
                 .build().encode().toUri();
         return uri;
     }
