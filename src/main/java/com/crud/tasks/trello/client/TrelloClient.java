@@ -34,24 +34,23 @@ public class TrelloClient {
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUri(), TrelloBoardDto[].class);
 
-/**   'Original Kodilla has kept for educational purposes'
-    if (boardsResponse != null) {
-            return Arrays.asList(boardsResponse);
-        }
-        return new ArrayList<>();
- */
+////   'Original Kodilla has kept for educational purposes'
+//    if (boardsResponse != null) {
+//            return Arrays.asList(boardsResponse);
+//        }
+//        return new ArrayList<>();
 
-        TrelloBoardDto trelloBoardDto = new TrelloBoardDto();
-        Optional<TrelloBoardDto> optionalTrelloBoardDto = Optional.of(trelloBoardDto);
-
-        return  (optionalTrelloBoardDto.isPresent())?Arrays.asList(boardsResponse):new ArrayList<>();
-
+        final boolean present = Optional.ofNullable(boardsResponse).isPresent();
+        return  (present)?Arrays.asList(boardsResponse):new ArrayList<>();
     }
 
     private URI getUri() {
         final URI uri = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + username)
                 .queryParam("key", trelloAppKey)
-                .queryParam("token", trelloToken).build().encode().toUri();
+                .queryParam("token", trelloToken)
+                .queryParam("fields", "name,id")
+//                .queryParam("lists", "all")
+                .build().encode().toUri();
         return uri;
     }
 }
