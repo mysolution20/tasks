@@ -46,12 +46,12 @@ public class TrelloClient {
  */
 
         return Optional.ofNullable(boardsResponse)
-                .map(Arrays::asList)        // --> .map(a -> Arrays.asList(a))  :lambda is much readable
+                .map(Arrays::asList)                 /** --> .map(a -> Arrays.asList(a))  :lambda is much readable */
                 .orElse(Collections.emptyList());
     }
 
     private URI getUri() {
-        final URI uri = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + username)
+        final URI uri = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + username + "/boards")
                 .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
                 .queryParam("fields", "name,id")
