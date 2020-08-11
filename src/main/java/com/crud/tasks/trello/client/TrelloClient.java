@@ -5,17 +5,24 @@ import com.crud.tasks.domain.TrelloBadges;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.mapper.CreatedTrelloCard;
+import jdk.nashorn.internal.runtime.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.*;
 
+import static java.util.Optional.ofNullable;
+
 @Component
 public class TrelloClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrelloClient.class);
     @Autowired
     private RestTemplate restTemplate;
 
@@ -24,7 +31,20 @@ public class TrelloClient {
 
     public List<TrelloBoardDto> getTrelloBoards() {
 
-        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUri(), TrelloBoardDto[].class);
+        try {
+            TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUri(), TrelloBoardDto[].class);
+
+//            return ofNullable(boardsResponse)
+//                    .map(Arrays::asList)                   /** --> .map(a -> Arrays.asList(a))  :lambda is much readable */
+//                    .orElse(Collections.emptyList());
+
+            return Arrays.asList(ofNullable(boardsResponse)
+                    .orElse(new TrelloBoardDto[0]));         // <--  Original from Kodilla
+
+        } catch (RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            return new ArrayList<>();
+        }
 
 /**  'Original Kodilla has kept for educational purposes'
 
@@ -40,9 +60,6 @@ public class TrelloClient {
  return  (present)?Arrays.asList(boardsResponse):new ArrayList<>();
  */
 
-        return Optional.ofNullable(boardsResponse)
-                .map(Arrays::asList)                 /** --> .map(a -> Arrays.asList(a))  :lambda is much readable */
-                .orElse(Collections.emptyList());
     }
 
     private URI getUri() {
@@ -55,7 +72,7 @@ public class TrelloClient {
     }
 
     public CreatedTrelloCard createNewCard(TrelloCardDto trelloCardDto) {
-        return restTemplate.postForObject(getUriCard(trelloCardDto),null,CreatedTrelloCard.class);
+        return restTemplate.postForObject(getUriCard(trelloCardDto), null, CreatedTrelloCard.class);
     }
 
     private URI getUriCard(TrelloCardDto trelloCardDto) {
@@ -67,6 +84,6 @@ public class TrelloClient {
                 .queryParam("pos", trelloCardDto.getPos())
                 .queryParam("idList", trelloCardDto.getListId())
                 .build().encode().toUri();
-     }
+    }
 
 }
