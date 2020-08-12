@@ -34,12 +34,12 @@ public class TrelloClient {
         try {
             TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUri(), TrelloBoardDto[].class);
 
-//            return ofNullable(boardsResponse)
-//                    .map(Arrays::asList)                   /** --> .map(a -> Arrays.asList(a))  :lambda is much readable */
-//                    .orElse(Collections.emptyList());
+            return ofNullable(boardsResponse)
+                    .map(Arrays::asList)                   /** --> .map(a -> Arrays.asList(a))  :lambda is much readable */
+                    .orElse(Collections.emptyList());
 
-            return Arrays.asList(ofNullable(boardsResponse)
-                    .orElse(new TrelloBoardDto[0]));         // <--  Original from Kodilla
+//            return Arrays.asList(ofNullable(boardsResponse)
+//                    .orElse(new TrelloBoardDto[0]));         // <--  Original from Kodilla
 
         } catch (RestClientException e) {
             LOGGER.error(e.getMessage(), e);
