@@ -38,27 +38,29 @@ public class TrelloClient {
                     .map(Arrays::asList)                   /** --> .map(a -> Arrays.asList(a))  :lambda is much readable */
                     .orElse(Collections.emptyList());
 
-//            return Arrays.asList(ofNullable(boardsResponse)
-//                    .orElse(new TrelloBoardDto[0]));         // <--  Original from Kodilla
+
+            /** return Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0])); // <-- Original Kodilla */
+
+            /**  'Original Kodilla has kept for educational purposes'
+
+             if (boardsResponse != null) {
+             return Arrays.asList(boardsResponse);
+             }
+             return new ArrayList<>();
+             */
+
+            /**   'Version with isPresent() method that need avoid as possible, kept for educational purposes'
+
+             final boolean present = Optional.ofNullable(boardsResponse).isPresent();
+             return  (present)?Arrays.asList(boardsResponse):new ArrayList<>();
+             */
+
 
         } catch (RestClientException e) {
             LOGGER.error(e.getMessage(), e);
             return new ArrayList<>();
         }
 
-/**  'Original Kodilla has kept for educational purposes'
-
- if (boardsResponse != null) {
- return Arrays.asList(boardsResponse);
- }
- return new ArrayList<>();
- */
-
-/**   'Version with isPresent() method that need avoid as possible, kept for educational purposes'
-
- final boolean present = Optional.ofNullable(boardsResponse).isPresent();
- return  (present)?Arrays.asList(boardsResponse):new ArrayList<>();
- */
 
     }
 
