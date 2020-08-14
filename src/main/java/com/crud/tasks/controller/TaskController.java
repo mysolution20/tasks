@@ -74,7 +74,7 @@ public class TaskController {
     public TaskDto updateTask(@RequestBody TaskDto taskDto) {
         final Task task = taskMapper.mapToTask(taskDto);// map DTO /data transfer object/ do encji dla zmian w DB
         final Task saveTask = service.saveTask(task);   // po zmanie ma encje aby zapisać do BD gdzie uzupełnia id
-        return taskMapper.mapToTaskDto(saveTask);       // po zmianie id mapóje ponownie na/DTO/ aby nie zwracać encji
+        return taskMapper.mapToTaskDto(saveTask);       // po zmianie id mapuje ponownie na/DTO/ aby nie zwracać encji
     }
 
     /**

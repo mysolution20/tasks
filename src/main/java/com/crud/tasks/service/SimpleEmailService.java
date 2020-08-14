@@ -29,14 +29,14 @@ public class SimpleEmailService {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
 
         }
-
     }
 
     private SimpleMailMessage createMailMessage(final Mail mail) {
-        return getExtendedMailMessage(mail);
+
+        return getMailMessage(mail);
     }
 
-    private SimpleMailMessage getExtendedMailMessage(final Mail mail) {
+    private SimpleMailMessage getMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());

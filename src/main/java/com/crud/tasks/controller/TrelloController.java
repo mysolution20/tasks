@@ -3,6 +3,7 @@ package com.crud.tasks.controller;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.mapper.CreatedTrelloCard;
+import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.client.TrelloClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import java.util.Objects;
 @RequestMapping("/v1/trello")
 public class TrelloController {
     @Autowired
-    private TrelloClient trelloClient;
+    private TrelloService trelloService;                                        // <-- podmieniony w module 23.4 z TrelloClient trelloClient
 
-    @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
+    @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")      // value = "/getTrelloBoards"  ?????
     public List<TrelloBoardDto> getTrelloBoards() {
-        return trelloClient.getTrelloBoards();
+        return trelloService.fetchTrelloBoards();                               // <-- podmieniony w module 23.4 z trelloClient.getTrelloBoards();
     }
 
     /**
@@ -51,8 +52,8 @@ public class TrelloController {
      * }
      */
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")
+    @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")    // value = "/createTrelloCard"  ?????
     public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-        return trelloClient.createNewCard(trelloCardDto);
+        return trelloService.createTrelloCard(trelloCardDto);                   // <-- podmieniony w module 23.4 z trelloClient.createNewCard(trelloCardDto);;
     }
 }
